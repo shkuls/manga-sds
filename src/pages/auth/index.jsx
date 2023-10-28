@@ -18,7 +18,7 @@ const navigate = useNavigate();//for redirection
       auth : true ,
     }
     localStorage.setItem('auth' ,JSON.stringify(authInfo) )
-    navigate('/exp')
+    navigate('/uploadPage')
   }
 
   return (
