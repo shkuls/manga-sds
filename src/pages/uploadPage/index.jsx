@@ -5,6 +5,7 @@ import {ref, uploadBytes , listAll, getDownloadURL} from 'firebase/storage'
 
 import { Document , Text , Page , PDFViewer } from '@react-pdf/renderer';
 
+import Tgs from "../../component/Tags"
 
 
 
@@ -24,7 +25,17 @@ export function UploadPage() {
         if(file === null)
             {alert("file is null")
             return;}
-        const FileRef = ref(storage , `${file.name}`)
+        const FileRef = ref(storage , `pdfs/${file.name}`)
+        uploadBytes(FileRef ,file).then(()=>{
+            alert("uploaded")
+            console.log(file)
+            setFile(null)
+        })
+    const UploadIMG = () =>{
+        if(file === null)
+            {alert("file is null")
+            return;}
+        const FileRef = ref(storage , `img/${file.name}`)
         uploadBytes(FileRef ,file).then(()=>{
             alert("uploaded")
             console.log(file)
@@ -32,15 +43,7 @@ export function UploadPage() {
         })
 
     }
-    useEffect(()=>{
-            listAll(storageRef).then((response)=>{
-                getDownloadURL(response.items[0]).then((url)=>{
-                    setpdfurl(url);
-                    console.log(url);
-                
-                })
-            }) ;
-        } , [])
+    
 
   return (
     <div>
@@ -48,14 +51,14 @@ export function UploadPage() {
         <div class="container my-5">
             <p>Upload PDF File</p>
         <input class="btn btn-primary my-5 mx-4" type="file" name="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
+        <button onClick={UploadFile} type="button" class="btn btn-primary my-5">Upload File</button>
 
         <p>Upload Cover Image</p>
         <input class="btn btn-primary my-5 mx-4" type="file" name="file" onChange={(e)=>{setImage(e.target.files[0])}}/>
-        
-        <button onClick={UploadFile} type="button" class="btn btn-primary my-5">Upload File</button>
+        <button onClick={UploadIMG} type="button" class="btn btn-primary my-5">Upload File</button>
 
 
-
+        <Tgs/>
 
 
         
@@ -65,4 +68,5 @@ export function UploadPage() {
     </div>
     </div>
   )
+}
 }
